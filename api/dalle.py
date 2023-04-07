@@ -4,7 +4,7 @@ import requests
 import base64
 
 # Set up the OpenAI API client
-openai.api_key = "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"
+openai.api_key = ""
 
 songstyle = input("Enter the your song style")
 
