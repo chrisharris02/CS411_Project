@@ -1,58 +1,40 @@
-from flask import Flask
+from flask import Flask, request, abort, jsonify
+from flask_bcrypt import Bcrypt
 import os
 import openai
 from dotenv import load_dotenv
+from models import db, User
+from config import ApplicationConfig
 
 app = Flask(__name__)
+app.config.from_object(ApplicationConfig)
 
-@app.route("/members")
-def members():
-    
+bcrypt = Bcrypt(app)
+db.init_app(app)
+ 
+with app.app_context():
+    db.create_all()
 
+#User Registration
 
-    load_dotenv()
+@app.route("/register", methods=["POST"])
+def register_user():
+    email = request.json["email"]
+    password = request.json["password"]
+    user_exists = User.query.filter_by(email=email).first() is not None
 
-    OPENAI_API_KEY = os.getenv("gpt_key")
-    openai.api_key = OPENAI_API_KEY
+    if user_exists:
+        return jsonify({"error": "User already exists"}),409
 
-    #initializing variables
+    hashed_password = bcrypt.generate_password_hash(password)
+    new_user = User(email=email, password = hashed_password)
+    db.session.add(new_user)
+    db.session.commit()
 
-    num_songs = 5 #how many songs do you want in the playlist
-
-    vibe_of_music = 'Chill' #how would you describe the general vibe of the music?
-
-    genre_of_music = 'Indie' #What genre of music do you want the playlist to have?
-
-    another_genre = None #String
-
-    decades = '2000s'
-
-    instrumental = True #boolean 
-
-    vocal = None #boolean
-
-    artist_name_playlist = 'Tame Imapala' #String
-
-
-
-    content = f"Hello! I want a list of {num_songs} {vibe_of_music} songs from the decade {decades}. I want the songs to be instrumental and have at least one song by {artist_name_playlist}"
-    message = [
-        {"role": "user", "content": content}
-    ]
-
-        
-    #print (message)
-    completion = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    temperature=.8,
-    messages= message
-    )
-
-    output = str(completion.choices[0].message.content)
-
-   # return(str())
-    return {'data': [output]}
-    #return{'data': []}
+    return jsonify({
+        "id": new_user.id,
+        "email": new_user.email
+    })
 
 if __name__ == "__main__":
     app.run(port=4500,debug=True)
