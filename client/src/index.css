@@ -16,3 +16,12 @@ button{
   margin:5px;
   padding:5px;
 }
+
+input{
+  font-size: 18px;
+  margin-left: 5px;
+}
+
+label{
+  font-size: 20px;
+}
