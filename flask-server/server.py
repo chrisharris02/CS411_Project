@@ -34,6 +34,7 @@ def register_user():
     new_user = User(email=email, password = hashed_password)
     db.session.add(new_user)
     db.session.commit()
+    session["user_id"] = new_user.id #Auto login user after registration
 
     return jsonify({
         "id": new_user.id,
@@ -72,5 +73,12 @@ def login_user():
     "id": user.id,
     "email": user.email
 })
+
+
+@app.route("/logout", methods=["POST"])
+def logout_user():
+    session.pop("user_id")
+    return "200"
+
 if __name__ == "__main__":
     app.run(port=4500,debug=True)

@@ -6,6 +6,11 @@ const LandingPage: React.FC = () =>{
 
     const[user, setUser] = useState<User | null>(null)
 
+
+    const logoutUser = async() =>{
+        const resp = await httpClient.post("//localhost:4500/logout");
+        window.location.href="/"
+    }
     useEffect(() => {
         (async () => {
             try{
@@ -26,6 +31,7 @@ const LandingPage: React.FC = () =>{
           <h1>Logged in</h1>
           <h2>Email: {user.email}</h2>
           <h2>ID: {user.id}</h2>
+          <button onClick = {logoutUser}>Logout</button>
           </div>
           ) : (
             <div>
