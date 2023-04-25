@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { User } from '../types'
 import httpClient from '../httpClient'
 import './loginStyle.css';
-import {motion, useAnimate, usePresence} from "framer-motion"
+
 
 
 import {
@@ -37,8 +37,8 @@ const AiSession: React.FC = () => {
     const sendMusicPreferences = async ()=>{
 
         try{
-            console.log(numSongs);
-        const resp = await httpClient.post("//localhost:4500/sendMusicPreferences",{
+            console.log(musicType);
+        const resp = await httpClient.post("//localhost:4500/sendUserPreferences",{
             numSongs,
             musicVibe,
             musicGenre,
@@ -120,28 +120,28 @@ const AiSession: React.FC = () => {
     <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-4">Fill in your music preferences</h3>
 
 
-        <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='How many songs would you like in your playlist?' size='lg' value={numSongs}onChange={(e) => setNumSongs(e.target.value)}type='text'/>
+        <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='How many songs would you like in your playlist?' size='lg' value={numSongs} onChange={(e) => setNumSongs(e.target.value)} type='text'/>
 
-        <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='How would you describe the general vibe of the music?' size='lg' id='form2' type='text'/>
+        <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='How would you describe the general vibe of the music?' size='lg' value={musicVibe} onChange={(e) => setMusicVibe(e.target.value)} type='text'/>
     
-        <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='What genre of music do you want the playlist to have?' size='lg' id='form3' type='text'/>
+        <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='What genre of music do you want the playlist to have?' size='lg' id='form3' value= {musicGenre} onChange={(e) => setMusicGenre(e.target.value)} type='text'/>
 
-        <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='Name an artist an artist that you want included in the playlist:' size='lg' id='form4' type='text'/>
+        <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='Name an artist an artist that you want included in the playlist:' size='lg' value= {artistName} onChange={(e) => setArtistName(e.target.value)} id='form4' type='text'/>
 
                   <div className='d-md-flex justify-content-start align-items-center mb-4'>
                     <h6 className="fw-bold mb-0 me-4">Music Decade: </h6>
-                    <MDBRadio name='inlineRadio' id='inlineRadio1' value='2010s' label='2010s' inline />
-                    <MDBRadio name='inlineRadio' id='inlineRadio2' value='2000s' label='2000s' inline />
-                    <MDBRadio name='inlineRadio' id='inlineRadio3' value='Instrumental' label='1990s' inline />
-                    <MDBRadio name='inlineRadio' id='inlineRadio4' value='Instrumental' label='1980s' inline />
-                    <MDBRadio name='inlineRadio' id='inlineRadio5' value='Instrumental' label='1970s' inline />
-                    <MDBRadio name='inlineRadio' id='inlineRadio6' value='Instrumental' label='1960s' inline />
+                    <MDBRadio name='decadeSelector' id='inlineRadio1' value='2010s' label='2010s'onChange={(e) => setMusicDecade(e.target.value)} inline />
+                    <MDBRadio name='decadeSelector' id='inlineRadio2' value='2000s' label='2000s' onChange={(e) => setMusicDecade(e.target.value)} inline />
+                    <MDBRadio name='decadeSelector' id='inlineRadio3' value='1990s' label='1990s' onChange={(e) => setMusicDecade(e.target.value)} inline />
+                    <MDBRadio name='decadeSelector' id='inlineRadio4' value='1980s' label='1980s' onChange={(e) => setMusicDecade(e.target.value)} inline />
+                    <MDBRadio name='decadeSelector' id='inlineRadio5' value='1970s' label='1970s' onChange={(e) => setMusicDecade(e.target.value)} inline />
+                    <MDBRadio name='decadeSelector' id='inlineRadio6' value='1960s' label='1960s' onChange={(e) => setMusicDecade(e.target.value)} inline />
                   </div>
 
                   <div className='d-md-flex justify-content-start align-items-center mb-4'>
                     <h6 className="fw-bold mb-0 me-4">Music Type: </h6>
-                    <MDBRadio name='inlineRadio' id='inlineRadio7' value='Vocal' label='Vocal' inline />
-                    <MDBRadio name='inlineRadio' id='inlineRadio8' value='Instrumental' label='Instrumental' inline />
+                    <MDBRadio name='musicTypeSelector' id='inlineRadio7' value='Vocal' onChange={(e) => setMusicType(e.target.value)} label='Vocal' inline />
+                    <MDBRadio name='musicTypeSelector' id='inlineRadio8' value='Instrumental' onChange={(e) => setMusicType(e.target.value)} label='Instrumental' inline />
                   </div>
              
     <MDBBtn onClick={() => sendMusicPreferences()}color="success" className='w-100 mb-4 ' size='lg'>Generate my playlist</MDBBtn>
