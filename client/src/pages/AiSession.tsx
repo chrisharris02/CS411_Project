@@ -6,6 +6,12 @@ import httpClient from '../httpClient'
 const AiSession: React.FC = () => {
 
     const[user, setUser] = useState<User | null>(null)
+
+    const logoutUser = async() =>{
+        const resp = await httpClient.post("//localhost:4500/logout");
+        window.location.href="/"
+    }
+
     useEffect(() => {
         (async () => {
             try{
@@ -26,6 +32,7 @@ const AiSession: React.FC = () => {
       <h2>Email: {user.email}</h2>
       <h2>ID: {user.id}</h2>
       <h2>SpotifyId: {user.spotify_token}</h2>
+      <button onClick = {logoutUser}>Logout</button>
       </div>
       ) : (
         <div>

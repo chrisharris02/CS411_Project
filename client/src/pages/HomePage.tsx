@@ -1,5 +1,7 @@
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import httpClient from "../httpClient";
+import { User } from '../types'
 import './loginStyle.css';
 import {
   MDBBtn,
@@ -13,8 +15,47 @@ import {
 }
 from 'mdb-react-ui-kit';
 
-function HomePage() {
-  return (
+
+
+const HomePage: React.FC = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const[user, setUser] = useState<User | null>(null)
+
+
+    const logInUser = async ()=>{
+        try{
+        const resp = await httpClient.post("//localhost:4500/login",{
+            email,
+            password,
+        });
+
+        window.location.href = "/ai-session";
+    }
+        catch(error: any){
+            if (error.response.status === 401){ //IF LOGIN DOESNT WORK
+                alert("Invalid credentials");
+            }
+    };
+    }
+    
+useEffect(() => {
+        (async () => {
+            try{
+           const resp = await httpClient.get("//localhost:4500/@me");
+
+           setUser(resp.data);
+           window.location.href ="/ai-session";
+            }catch(error){
+                console.log("Not authenticated");
+            }
+            if(user!= null){
+                window.location.href = "/ai-session";
+            }
+        })();
+    }, []);
+  return ( 
+
     <div className="login-body" style={{height:'100vh'}}>
     <MDBContainer fluid>
 
@@ -27,11 +68,15 @@ function HomePage() {
               <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
               <p className="text-white-50 mb-5">Please enter your login and password</p>
 
-              <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Email address' labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} id='formControlLg' type='email' size="lg"/>
-              <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Password' labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} id='formControlLg' type='password' size="lg"/>
+              <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Email address' 
+              labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} style={{color: 'white'}}  id='formControlLg'
+               value={email} onChange={(e) => setEmail(e.target.value)} type='email' size="lg"/>
+
+
+              <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' style={{color: 'white'}} label='Password' labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} id='formControlLg' value={password} onChange={(e) => setPassword(e.target.value)} type='password' size="lg"/>
 
          {/*    <p className="small mb-3 pb-lg-2"><a className="text-white-50" href="#!">Forgot password?</a></p>*/}
-              <MDBBtn outline className='mx-2 px-5' color='light' size='lg'>
+              <MDBBtn itemType = "submit" type="submit" outline className='mx-2 px-5' color='light' size='lg' onClick={() => logInUser()}>
                 Login
               </MDBBtn>
 
@@ -51,6 +96,7 @@ function HomePage() {
     </MDBContainer>
     </div>
   );
-}
+};
+
 
 export default HomePage;
