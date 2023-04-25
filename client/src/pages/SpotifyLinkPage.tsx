@@ -7,10 +7,10 @@ const SpotifyLink: React.FC = () =>{
     const[user, setUser] = useState<User | null>(null)
 
 
-    const goToSpotify = async() =>{
-        const resp = await httpClient.post("//localhost:4500/spotifyLogin");
-        window.location.href="http://localhost:3000/spotifyLogin"
-    }
+    // const goToSpotify = async() =>{
+    //     const resp = await httpClient.post("//localhost:4500/spotifyLogin");
+    //     window.location.href="http://localhost:3000/spotifyLogin"
+    // }
     useEffect(() => {
         (async () => {
             try{
@@ -29,7 +29,7 @@ const SpotifyLink: React.FC = () =>{
           {user != null && user.spotify_token==""? ( //If user is logged in
           <div>
           <h1>Link your account</h1>
-          <button onClick = {goToSpotify}>Link Account</button>
+         <a href = "http://localhost:4500/spotifyLogin?test=test123"><button>Link Account</button></a> 
           </div>
           ) : (
             <div>

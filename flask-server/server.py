@@ -42,18 +42,18 @@ def create_spotify_oauth():
 @app.route('/spotifyRedirect')
 def redirectPage():
     sp_oauth = create_spotify_oauth()
+    user_id = session.get("user_id")
     auth_code = request.args.get('code') #takes the code parameter from the re-direct url returned by Spotify
-    id = request.json["id"]
-    update_user = User.query.filter_by(id=id).first()
+    update_user = User.query.filter_by(id=user_id).first()
     update_user.spotifyToken = auth_code
     db.session.commit()
-    return redirect('http://localhost:4500/ai-session')
+    return redirect('http://localhost:3000/ai-session')
 
 @app.route('/spotifyLogin')
 def login():
     sp_oauth = create_spotify_oauth()
     auth_url = sp_oauth.get_authorize_url()
-    return redirect(auth_url)
+    return redirect(auth_url + '&test=test')
 
 
 #User Registration

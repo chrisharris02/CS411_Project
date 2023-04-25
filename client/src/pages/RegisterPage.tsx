@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import httpClient from "../httpClient";
+import '../index.css';
 
 
 const RegisterPage: React.FC = () => {

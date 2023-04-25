@@ -6,16 +6,18 @@ import NotFound from "./pages/NotFound";
 import RegisterPage from "./pages/RegisterPage";
 import SpotifyLinkPage from "./pages/SpotifyLinkPage";
 import AiSession from "./pages/AiSession";
+import HomePage from "./pages/HomePage";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path = "/" element={<LandingPage />} />
+        <Route path = "/" element={<HomePage />} />
         <Route path = "/login" element={<LoginPage />} />
         <Route path = "/register" element={<RegisterPage />} />
         <Route path = "/spotify-authorization" element={<SpotifyLinkPage />} />
         <Route path = "/ai-session" element={<AiSession />} />
+        <Route path = "/home" element={<LandingPage />} />
         <Route path = "*" element={<NotFound />}/>
       </Routes>
     </BrowserRouter>
