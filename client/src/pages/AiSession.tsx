@@ -117,7 +117,8 @@ const AiSession: React.FC = () => {
 <MDBCard>
   <MDBCardBody className='px-4'>
 
-    <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-4">Fill in your music preferences</h3>
+    <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-1">Fill in your music preferences</h3>
+    <h6 className="fw mb-4 pb-2 pb-md-0 mb-md-4">Please complete all the fields to generate a personalized playlist*</h6>
 
 
         <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='How many songs would you like in your playlist?' size='lg' value={numSongs} onChange={(e) => setNumSongs(e.target.value)} type='text'/>
