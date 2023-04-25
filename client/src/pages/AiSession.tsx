@@ -2,6 +2,9 @@ import React, {useState, useEffect} from 'react'
 import { User } from '../types'
 import httpClient from '../httpClient'
 import './loginStyle.css';
+import {motion, useAnimate, usePresence} from "framer-motion"
+
+
 import {
     MDBNavbar,
     MDBNavbarToggler,
@@ -24,10 +27,42 @@ const AiSession: React.FC = () => {
 
     const[user, setUser] = useState<User | null>(null)
 
+    const [numSongs, setNumSongs] = useState("");
+    const [musicVibe, setMusicVibe] = useState("");
+    const [musicGenre, setMusicGenre] = useState("");
+    const [artistName, setArtistName] = useState("");
+    const [musicDecade, setMusicDecade] = useState("");
+    const [musicType, setMusicType] = useState("");
+    const u_id = user?.id;
+    const sendMusicPreferences = async ()=>{
+
+        try{
+            console.log(numSongs);
+        const resp = await httpClient.post("//localhost:4500/sendMusicPreferences",{
+            numSongs,
+            musicVibe,
+            musicGenre,
+            artistName,
+            musicDecade,
+            musicType,
+            u_id,
+            
+        });
+
+        window.location.href = "/spotify-authorization";
+    }
+        catch(error: any){
+            if (error.response.status === 401){ //IF LOGIN DOESNT WORK
+                alert("Invalid credentials");
+            }
+    };
+    }
+
     const logoutUser = async() =>{
         const resp = await httpClient.post("//localhost:4500/logout");
         window.location.href="/"
     }
+
 
     useEffect(() => {
         (async () => {
@@ -77,60 +112,46 @@ const AiSession: React.FC = () => {
 
 
 
-
 <MDBRow className='justify-content-center align-items-center m-5'>
 
 <MDBCard>
   <MDBCardBody className='px-4'>
 
-    <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
+    <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-4">Fill in your music preferences</h3>
 
-    <MDBRow>
 
-      <MDBCol md='6'>
-        <MDBInput wrapperClass='mb-4' label='First Name' size='lg' id='form1' type='text'/>
-      </MDBCol>
+        <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='How many songs would you like in your playlist?' size='lg' value={numSongs}onChange={(e) => setNumSongs(e.target.value)}type='text'/>
 
-      <MDBCol md='6'>
-        <MDBInput wrapperClass='mb-4' label='Last Name' size='lg' id='form2' type='text'/>
-      </MDBCol>
+        <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='How would you describe the general vibe of the music?' size='lg' id='form2' type='text'/>
+    
+        <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='What genre of music do you want the playlist to have?' size='lg' id='form3' type='text'/>
 
-    </MDBRow>
+        <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='Name an artist an artist that you want included in the playlist:' size='lg' id='form4' type='text'/>
 
-    <MDBRow>
+                  <div className='d-md-flex justify-content-start align-items-center mb-4'>
+                    <h6 className="fw-bold mb-0 me-4">Music Decade: </h6>
+                    <MDBRadio name='inlineRadio' id='inlineRadio1' value='2010s' label='2010s' inline />
+                    <MDBRadio name='inlineRadio' id='inlineRadio2' value='2000s' label='2000s' inline />
+                    <MDBRadio name='inlineRadio' id='inlineRadio3' value='Instrumental' label='1990s' inline />
+                    <MDBRadio name='inlineRadio' id='inlineRadio4' value='Instrumental' label='1980s' inline />
+                    <MDBRadio name='inlineRadio' id='inlineRadio5' value='Instrumental' label='1970s' inline />
+                    <MDBRadio name='inlineRadio' id='inlineRadio6' value='Instrumental' label='1960s' inline />
+                  </div>
 
-      <MDBCol md='6'>
-        <MDBInput wrapperClass='mb-4' label='Birthday' size='lg' id='form3' type='text'/>
-      </MDBCol>
-
-      <MDBCol md='6' className='mb-4'>
-        <h6 className="fw-bold">Gender: </h6>
-        <MDBRadio name='inlineRadio' id='inlineRadio1' value='option1' label='Female' inline />
-        <MDBRadio name='inlineRadio' id='inlineRadio2' value='option2' label='Male' inline />
-        <MDBRadio name='inlineRadio' id='inlineRadio3' value='option3' label='Other' inline />
-      </MDBCol>
-
-    </MDBRow>
-
-    <MDBRow>
-
-      <MDBCol md='6'>
-        <MDBInput wrapperClass='mb-4' label='Email' size='lg' id='form4' type='email'/>
-      </MDBCol>
-
-      <MDBCol md='6'>
-        <MDBInput wrapperClass='mb-4' label='Phone Number' size='lg' id='form5' type='rel'/>
-      </MDBCol>
-
-    </MDBRow>
-
-    <MDBBtn className='mb-4' size='lg'>Submit</MDBBtn>
+                  <div className='d-md-flex justify-content-start align-items-center mb-4'>
+                    <h6 className="fw-bold mb-0 me-4">Music Type: </h6>
+                    <MDBRadio name='inlineRadio' id='inlineRadio7' value='Vocal' label='Vocal' inline />
+                    <MDBRadio name='inlineRadio' id='inlineRadio8' value='Instrumental' label='Instrumental' inline />
+                  </div>
+             
+    <MDBBtn onClick={() => sendMusicPreferences()}color="success" className='w-100 mb-4 ' size='lg'>Generate my playlist</MDBBtn>
 
   </MDBCardBody>
 </MDBCard>
 
 </MDBRow>
 </MDBContainer>
+
       <div>
       <h1>Logged in</h1>
       <h2>Email: {user.email}</h2>
