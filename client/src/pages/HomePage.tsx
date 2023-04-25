@@ -4,15 +4,16 @@ import httpClient from "../httpClient";
 import { User } from '../types'
 import './loginStyle.css';
 import {
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBInput,
-  MDBIcon
-}
+    MDBBtn,
+    MDBContainer,
+    MDBRow,
+    MDBCol,
+    MDBCard,
+    MDBCardBody,
+    MDBInput,
+    MDBCheckbox,
+    MDBIcon
+  }
 from 'mdb-react-ui-kit';
 
 
@@ -55,47 +56,59 @@ useEffect(() => {
         })();
     }, []);
   return ( 
+    <MDBContainer style={{height:'100vh'}} fluid className='p-4 background-radial-gradient overflow-hidden'>
 
-    <div className="login-body" style={{height:'100vh'}}>
-    <MDBContainer fluid>
+    <MDBRow style={{marginTop:'10%'}}>
 
-      <MDBRow className='d-flex justify-content-center align-items-center h-100'>
-        <MDBCol col='12'>
+      <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
 
-          <MDBCard className='bg-dark text-white my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '400px'}}>
-            <MDBCardBody className='p-5 d-flex flex-column align-items-center mx-auto w-100'>
+        <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{color: 'hsl(218, 81%, 95%)'}}>
+          An Ai Music Service <br />
+          <span style={{color: 'hsl(218, 81%, 75%)'}}>designed for you</span>
+        </h1>
 
-              <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
-              <p className="text-white-50 mb-5">Please enter your login and password</p>
+        <p className='px-3' style={{color: 'hsl(218, 81%, 85%)'}}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Eveniet, itaque accusantium odio, soluta, corrupti aliquam
+          quibusdam tempora at cupiditate quis eum maiores libero
+          veritatis? Dicta facilis sint aliquid ipsum atque?
+        </p>
 
-              <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Email address' 
-              labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} style={{color: 'white'}}  id='formControlLg'
-               value={email} onChange={(e) => setEmail(e.target.value)} type='email' size="lg"/>
+      </MDBCol>
 
+      <MDBCol md='6' className='position-relative'>
 
-              <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' style={{color: 'white'}} label='Password' labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} id='formControlLg' value={password} onChange={(e) => setPassword(e.target.value)} type='password' size="lg"/>
+        <div id="radius-shape-1" className="position-absolute rounded-circle shadow-5-strong"></div>
+        <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
 
-         {/*    <p className="small mb-3 pb-lg-2"><a className="text-white-50" href="#!">Forgot password?</a></p>*/}
-              <MDBBtn itemType = "submit" type="submit" outline className='mx-2 px-5' color='light' size='lg' onClick={() => logInUser()}>
-                Login
-              </MDBBtn>
+        <MDBCard className='my-5 bg-glass'>
+          <MDBCardBody className='p-5'>
+          <div className="text-center">
+          <h2 style={{alignItems: 'center'}} className="fw-bold mb-2">Sign in</h2>
+          <br></br>
+</div>
+            <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.2em'}} wrapperClass='mb-4'  value={email} onChange={(e) => setEmail(e.target.value)} label='Email*' id='form3' type='email'/>
+            <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.2em'}} wrapperClass='mb-4'  value={password} onChange={(e) => setPassword(e.target.value)} label='Password*' id='form4' type='password'/>
 
+    
 
+            <MDBBtn  onClick={() => logInUser()} className='w-100 mb-4' size='lg'>Log in</MDBBtn>
 
-              <div>
-                <br></br>
-                <p className="mb-0">Don't have an account? <a href="/register" className="text-white-50 fw-bold">Sign Up</a></p>
+            <div className="text-center">
 
-              </div>
-            </MDBCardBody>
-          </MDBCard>
+<p>Don't have an account? <a href= "/register"style={{fontWeight: "bold"}}>Register</a></p>
+</div>
 
-        </MDBCol>
-      </MDBRow>
+          </MDBCardBody>
+        </MDBCard>
 
-    </MDBContainer>
-    </div>
-  );
+      </MDBCol>
+
+    </MDBRow>
+
+  </MDBContainer>
+);
+
 };
 
 

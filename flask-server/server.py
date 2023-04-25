@@ -53,7 +53,7 @@ def redirectPage():
 def login():
     sp_oauth = create_spotify_oauth()
     auth_url = sp_oauth.get_authorize_url()
-    return redirect(auth_url + '&test=test')
+    return redirect(auth_url)
 
 
 #User Registration
