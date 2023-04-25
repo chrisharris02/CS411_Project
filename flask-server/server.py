@@ -31,6 +31,23 @@ with app.app_context():
 
 
 
+#Main App Functionality
+#**********************#
+
+@app.route('/sendUserPrefrences', methods=["POST"])
+def getPlaylistInfo():
+    numSongs = request.json["numSongs"]
+    musicVibe = request.json["musicVibe"]
+    musicGenre = request.json["musicGenre"]
+    artistName = request.json["artistName"]
+    musicDecade = request.json["musicDecade"]
+    musicType = request.json["musicType"]
+
+    return 'not implemented yet'
+
+
+
+
 #SPOTIFY OAUTH
 def create_spotify_oauth():
     return SpotifyOAuth(
