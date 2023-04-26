@@ -158,6 +158,7 @@ const AiSession: React.FC = () => {
       <h2>Email: {user.email}</h2>
       <h2>ID: {user.id}</h2>
       <h2>SpotifyId: {user.spotify_token}</h2>
+      <h2>SpotifyRefresh: {user.spotify_refresh}</h2>
       <button onClick = {logoutUser}>Logout</button>
       </div>
       </div>
