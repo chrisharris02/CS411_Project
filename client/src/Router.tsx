@@ -7,6 +7,7 @@ import RegistrationPage from "./pages/RegistrationPage";
 import SpotifyLinkPage from "./pages/SpotifyLinkPage";
 import AiSession from "./pages/AiSession";
 import HomePage from "./pages/HomePage";
+import PlaylistView from "./pages/PlaylistView";
 
 const Router = () => {
   return (
@@ -19,6 +20,7 @@ const Router = () => {
         <Route path = "/ai-session" element={<AiSession />} />
         <Route path = "/home" element={<LandingPage />} />
         <Route path = "*" element={<NotFound />}/>
+        <Route path = "PlaylistView" element={<PlaylistView />}/>
       </Routes>
     </BrowserRouter>
   );
