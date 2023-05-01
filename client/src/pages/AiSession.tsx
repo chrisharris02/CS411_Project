@@ -63,11 +63,11 @@ const AiSession: React.FC = () => {
             u_id,
             
         });
-
-        window.location.href = "/spotify-authorization";
+        console.log(resp);
+        window.location.href = "/playlist-view";
     }
         catch(error: any){
-            if (error.response.status === 401){ //IF LOGIN DOESNT WORK
+            if (error.response.status === 404){ //If sending user preferences doesn't work
                 alert("Invalid credentials");
             }
     };
