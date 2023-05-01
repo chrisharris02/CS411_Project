@@ -34,6 +34,69 @@ with app.app_context():
 #Main App Functionality
 #**********************#
 
+<<<<<<< Updated upstream
+=======
+def get_track_id(token, track, artist):
+    sp_oauth = create_spotify_oauth()
+    code = token
+    track_name = track
+    artist_name = artist
+    token_info = sp_oauth.get_access_token(code)
+    spotify_object = spotipy.Spotify(auth=token_info['access_token'])
+    track_query = spotify_object.search(q=f'track:{track_name} artist:{artist_name}')
+    track_id = track_query['tracks']['items'][0]['uri']
+    return track_id
+
+def create_playlist(token, name):
+    sp_oauth = create_spotify_oauth()
+    code = token
+    playlist_name = name
+    token_info = sp_oauth.get_access_token(code)
+    spotify_object = spotipy.Spotify(auth=token_info['access_token'])
+    user_id = spotify_object.current_user()['id'] #Spotify UID of current user
+    create_playlist = spotify_object.user_playlist_create(user_id,playlist_name,False,False,'An Ai Generated Playlist')
+    return create_playlist['id'] #returns ID of created playlist
+
+def update_playlist_cover(token, playlist_id, base64_image):
+    sp_oauth = create_spotify_oauth()
+    code = token
+    token_info = sp_oauth.get_access_token(code)
+    spotify_object = spotipy.Spotify(auth=token_info['access_token'])
+    update_picture = spotify_object.playlist_upload_cover_image(playlist_id, base64_image)
+    return update_picture
+
+
+def add_tracks_to_playlist(token, playlist_id, track_list):#track_list is a list of song IDs
+    sp_oauth = create_spotify_oauth()
+    code = token
+    token_info = sp_oauth.get_access_token(code)
+    spotify_object = spotipy.Spotify(auth=token_info['access_token'])
+    add_to_playlist = spotify_object.playlist_add_items(playlist_id,track_list)
+    return add_to_playlist 
+
+def get_dalle_image(prompt):
+    openai.api_key = gpt_key
+    userPrompt = "Generate a modern, futuristic and artistic album cover with songs like Midnight City By M83, Solitude is Bliss By Tame Impala, and Inro by the xx without text"
+    # Define the DALL-E API endpoint
+    endpoint = "https://api.openai.com/v1/images/generations"
+    # Define the API request data
+    data = {
+        "model": "image-alpha-001",
+        "prompt": userPrompt,
+        "num_images": 1,
+        "size": "256x256",
+        "response_format": "url"
+    }
+    response = openai.Image.create(**data)
+    # Parse the response to extract the image URL
+    image_url = response["data"][0]["url"]
+    # Download the image data from the URL
+    image_data = requests.get(image_url).content
+    # Convert the image data to a base64-encoded string
+    image_base64 = base64.b64encode(image_data).decode("utf-8")
+    return image_base64
+
+>>>>>>> Stashed changes
 @app.route('/sendUserPrefrences', methods=["POST"])
 def getPlaylistInfo():
     numSongs = request.json["numSongs"]
