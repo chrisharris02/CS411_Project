@@ -36,6 +36,21 @@ const AiSession: React.FC = () => {
     const u_id = user?.id;
     const sendMusicPreferences = async ()=>{
 
+      if (!numSongs || !musicVibe || !musicGenre || !artistName || !musicDecade || !musicType) {
+        alert('Please fill out all fields');
+        return;
+      }
+      
+      if (!/^\d+$/.test(numSongs) && numSongs !== "") {
+        alert("Enter a valid integer");
+        return;
+      } 
+      const numSongint = parseInt(numSongs, 10); 
+      if (numSongint >15 || numSongint <= 0) {
+        alert("Number of Songs Must be between 1 and 15");
+        return;
+      }
+
         try{
             console.log(musicType);
         const resp = await httpClient.post("//localhost:4500/sendUserPreferences",{
@@ -80,7 +95,7 @@ const AiSession: React.FC = () => {
     
     <div>
 
-      {user != null? ( //If user is logged in
+      {user !== null? ( //If user is logged in
 <div >
 <header style={{ paddingLeft: 0 }}>
 <MDBNavbar expand='lg' light  bgColor='white'>
@@ -121,7 +136,10 @@ const AiSession: React.FC = () => {
     <h6 className="fw mb-4 pb-2 pb-md-0 mb-md-4">Please complete all the fields to generate a personalized playlist*</h6>
 
 
-        <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='How many songs would you like in your playlist?' size='lg' value={numSongs} onChange={(e) => setNumSongs(e.target.value)} type='text'/>
+        <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='How many songs would you like in your playlist?' size='lg' value={numSongs} 
+        onChange={(e) => {
+            setNumSongs(e.target.value);
+          }} type='text'/>
 
         <MDBInput labelStyle={{fontSize: '1.1em', paddingBlock: '0.5em'}} wrapperClass='mb-4' label='How would you describe the general vibe of the music?' size='lg' value={musicVibe} onChange={(e) => setMusicVibe(e.target.value)} type='text'/>
     

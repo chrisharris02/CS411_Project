@@ -103,8 +103,43 @@ def getPlaylistInfo():
     artistName = request.json["artistName"]
     musicDecade = request.json["musicDecade"]
     musicType = request.json["musicType"]
+ 
 
-    return 'not implemented yet'
+def get_songs_gpt(numSongs, musicVibe, musicGenre,artistName,musicDecade, musicType):
+    openai.api_key = gpt_key
+
+    content = f"""Hello! I want a list of {numSongs} with a {musicVibe} vibe. 
+    The songs should have the style from the decade {musicDecade} and be of the genre {musicGenre}.
+    I want the songs to be {musicType} and have at least one song by {artistName}
+    each song in the list is represented by a number followed by a period, 
+    the song name in single quotes, and the artist name after the "by" keyword"""
+   
+    message = [
+    {"role": "user", "content": content}
+    ]
+
+    completion = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    temperature=.8,
+    messages= message
+    )
+
+
+    gptmessage = completion.choices[0].message.content
+
+    return gptmessage
+
+def parse_songs_to_dic(gptmessage):
+    song_dict = {}
+    lines = gptmessage.split('\n')  # split the message by line
+    for line in lines:
+        if line[0] in '123456789': #check if line is a song line
+          song_name, artist = line.split(" by ") #split line
+          song_name = song_name[4:-1] #trim song name
+          song_dict[song_name] = artist #assign to dict
+
+    return song_dict
+
 
 
 
