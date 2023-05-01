@@ -7,7 +7,7 @@ class ApplicationConfig:
     SECRET_KEY = os.environ["SECRET_KEY"]
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///sqlite3.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///sqlite4.db"
     SESSION_TYPE = "redis"
     SESSION_PERMANENT = False
     SESSION_USE_SIGNER = True
