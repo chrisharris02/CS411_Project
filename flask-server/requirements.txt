@@ -8,3 +8,4 @@ flask-cors
 spotipy
 openai
 axios
+Pillow

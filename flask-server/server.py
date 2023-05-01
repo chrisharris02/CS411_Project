@@ -65,7 +65,7 @@ def update_playlist_cover(token, playlist_id, base64_image):
     return update_picture
 
 
-def add_tracks_to_playlist(token, playlist_id, track_list):
+def add_tracks_to_playlist(token, playlist_id, track_list):#track_list is a list of song IDs
     sp_oauth = create_spotify_oauth()
     code = token
     token_info = sp_oauth.get_access_token(code)
