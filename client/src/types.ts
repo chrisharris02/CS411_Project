@@ -4,4 +4,6 @@ export interface User{
     firstName: string;
     lastName: string;
     spotify_token: string;
+    spotify_refresh: string;
+    spotifyExpiration: string;
 }

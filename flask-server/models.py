@@ -15,4 +15,6 @@ class User(db.Model):
     firstName = db.Column(db.String(345), unique=False)
     lastName = db.Column(db.String(345), unique=False)
     spotifyToken = db.Column(db.String(345), unique=False)
+    spotifyExpiration = db.Column(db.String(20), unique=False)
+    spotifyRefresh = db.Column(db.String(345), unique=False)
     

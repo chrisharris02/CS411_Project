@@ -5,11 +5,7 @@ python-dotenv
 flask-session
 redis
 flask-cors
-<<<<<<< Updated upstream
-spotipy
-=======
 spotipy
 openai
 axios
 Pillow
->>>>>>> Stashed changes
