@@ -48,10 +48,10 @@ def createPlaylistController():
     user_spotify_token = user.spotifyToken
     song_list = []
     art_url = json_object['imageUrl']
-    for item in json_object:
-        if item != 'imageUrl':
+    for songName in json_object:
+        if songName != 'imageUrl':
             try:
-                song_list.append(get_track_id(user_spotify_token,item,json_object[item]))
+                song_list.append(get_track_id(user_spotify_token,songName,json_object[songName])) #value of jsonObject is artist name
             except:
                 print('Exception with getting track id')
     playlist_id = create_playlist(user_spotify_token, 'Ai Generated Playlist')

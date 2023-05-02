@@ -52,10 +52,8 @@ const RegistrationPage: React.FC = () => {
           </h1>
 
           <p className='px-3' style={{color: 'hsl(218, 81%, 85%)'}}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Eveniet, itaque accusantium odio, soluta, corrupti aliquam
-            quibusdam tempora at cupiditate quis eum maiores libero
-            veritatis? Dicta facilis sint aliquid ipsum atque?
+          Create your own unique playlist and discover new music with our web application.
+        Login with Spotify, answer a few questions about your musical preferences, and enjoy a custom playlist tailored just for you.
           </p>
 
         </MDBCol>
