@@ -99,15 +99,6 @@ const PlaylistView: React.FC = () =>{
     <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-1">Here are your results!</h3>
     <h6 className="fw mb-4 pb-2 pb-md-0 mb-md-4">You can add this playlist to your Spotify account by clicking the button below</h6>
 
-    {/* <MDBCard background='dark' className='text-white mb-3' style={{ maxWidth: '100rem' }}>
-  
-        <MDBCardBody>
-          <MDBCardTitle >SongName</MDBCardTitle>
-          <MDBCardText>
-           ArtistName
-          </MDBCardText>
-        </MDBCardBody>
-      </MDBCard> */}
 
 
 
@@ -126,27 +117,32 @@ const PlaylistView: React.FC = () =>{
   </div>
   {imageUrl && (
     <div className="image-container" style={{ maxWidth: '80%', minWidth: '50%', display: 'flex', alignItems: 'center', justifyContent:'center'}}>
-      <img src={imageUrl} alt="Playlist" style={{ minWidth:'40%', maxWidth: '90%' }} />
+      <img src={imageUrl} alt="Playlist" style={{ minWidth:'40%', maxWidth: '80%' }} />
     </div>
   )}
 </div>
 
 
-
-
 <MDBRow>
+  <br></br>
+  <br></br>
+</MDBRow>
+
 <div className="d-flex justify-content-between">
-<MDBBtn size='lg' href="/ai-session"color="success" style={{float:"none"}}className='w-50 mb-3'>
+<MDBBtn onClick={() => window.location.href = '/ai-session'} size='lg' className='w-100 mb-3' color="success">
     TRY AGAIN
   </MDBBtn>
-  
-  <MDBBtn onClick={createSpotifyPlaylist} size='lg'style={{float:"none"}} className='w-50 mb-3' color="success">
+
+
+  <MDBBtn onClick={createSpotifyPlaylist} size='lg' className='w-100 mb-3' color="success">
     ADD THIS TO SPOTIFY
   </MDBBtn>
 
-</div>
+  </div>
 
-</MDBRow>
+
+
+
 
     <div className="loader-container">
       {loading && <BarLoader color="grey" width={800}/>}
