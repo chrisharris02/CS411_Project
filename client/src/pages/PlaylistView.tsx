@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { User } from '../types'
 import httpClient from '../httpClient'
+import './loginStyle.css';
 import {
     MDBNavbar,
     MDBNavbarToggler,
@@ -15,34 +16,47 @@ import {
     MDBNavbarItem,
     MDBNavbarLink,
     MDBInput,
-    MDBContainer
+    MDBContainer,
+    MDBCardHeader,
+    MDBCardTitle,
+    MDBCardText,
     
   } from 'mdb-react-ui-kit';
+
+  import { BarLoader } from 'react-spinners';
 const PlaylistView: React.FC = () =>{
 
+     const [loading, setLoading] = useState(false);
     const[user, setUser] = useState<User | null>(null)
+    const [playlist, setPlaylist] = useState<Record<string, string>>({});
+    
     const logoutUser = async() =>{
         const resp = await httpClient.post("//localhost:4500/logout");
         window.location.href="/"
     }
 
     const createSpotifyPlaylist = async() =>{
+      setLoading(true);
         const resp = await httpClient.post("//localhost:4500/createSpotifyPlaylist");
-        
+        setLoading(false);
+        alert("Check your spotify account!");
     }
+    
     useEffect(() => {
         (async () => {
             try{
            const resp = await httpClient.get("//localhost:4500/@me");
-
+           const parsedPlaylist = JSON.parse(resp.data.playlistInfo);
+           setPlaylist(parsedPlaylist);
            setUser(resp.data);
-           console.log(user?.playlistInfo)
             }catch(error){
                 console.log("Not authenticated");
             }
         })();
     }, []);
+    const imageUrl = playlist.imageUrl;
     return( 
+      
         <div>
         {user !== null? ( //If user is logged in
         <div >
@@ -73,12 +87,77 @@ const PlaylistView: React.FC = () =>{
         </MDBNavbar>
         </header>
         
-        
-        <h1>This is a sample Playlist View Page</h1>
-        <h2>Email: {user.email}</h2>
-        <h2>ID: {user.id}</h2>
-        <h2>playlistInfo: {user.playlistInfo}</h2>
-        <MDBBtn onClick={createSpotifyPlaylist} color="success">CREATE A SPOTIFY PLAYLIST</MDBBtn>
+        <MDBContainer fluid style={{height:'200vh'}} className='p-4 background-radial-gradient-2 overflow-hidden'>
+
+
+
+<MDBRow className='justify-content-center align-items-center m-5'>
+
+<MDBCard>
+  <MDBCardBody className='px-4'>
+
+    <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-1">Here are your results!</h3>
+    <h6 className="fw mb-4 pb-2 pb-md-0 mb-md-4">You can add this playlist to your Spotify account by clicking the button below</h6>
+
+    {/* <MDBCard background='dark' className='text-white mb-3' style={{ maxWidth: '100rem' }}>
+  
+        <MDBCardBody>
+          <MDBCardTitle >SongName</MDBCardTitle>
+          <MDBCardText>
+           ArtistName
+          </MDBCardText>
+        </MDBCardBody>
+      </MDBCard> */}
+
+
+
+<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+  <div className="card-container" style={{ width: '50%' }}>
+    {Object.entries(playlist)
+      .filter(([key]) => key !== 'imageUrl')
+      .map(([songName, artistName]) => (
+        <MDBCard key={songName} background="dark" className="text-white mb-3" style={{ maxWidth: '100rem', maxHeight: '10rem' }}>
+          <MDBCardBody>
+            <MDBCardTitle>{songName}</MDBCardTitle>
+            <MDBCardText>{artistName}</MDBCardText>
+          </MDBCardBody>
+        </MDBCard>
+      ))}
+  </div>
+  {imageUrl && (
+    <div className="image-container" style={{ maxWidth: '80%', minWidth: '50%', display: 'flex', alignItems: 'center', justifyContent:'center'}}>
+      <img src={imageUrl} alt="Playlist" style={{ minWidth:'40%', maxWidth: '90%' }} />
+    </div>
+  )}
+</div>
+
+
+
+
+<MDBRow>
+<div className="d-flex justify-content-between">
+<MDBBtn size='lg' href="/ai-session"color="success" style={{float:"none"}}className='w-50 mb-3'>
+    TRY AGAIN
+  </MDBBtn>
+  
+  <MDBBtn onClick={createSpotifyPlaylist} size='lg'style={{float:"none"}} className='w-50 mb-3' color="success">
+    ADD THIS TO SPOTIFY
+  </MDBBtn>
+
+</div>
+
+</MDBRow>
+
+    <div className="loader-container">
+      {loading && <BarLoader color="grey" width={800}/>}
+    </div>
+  </MDBCardBody>
+</MDBCard>
+
+</MDBRow>
+
+</MDBContainer>
+
         </div>
         ) : (
             <div>

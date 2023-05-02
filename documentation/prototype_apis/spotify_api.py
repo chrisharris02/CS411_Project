@@ -14,7 +14,6 @@ TOP_ARTISTS = 'https://api.spotify.com/v1/me/top/artists/'
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
-
 # POST
 auth_response = requests.post(AUTH_URL, {
     'grant_type': 'client_credentials',

@@ -74,4 +74,28 @@
       hsl(218, 41%, 19%) 80%,
       transparent 100%);
 }
+
+
+.background-radial-gradient-2 {
+  background-color: hsl(217, 17%, 73%);
+  background-image: radial-gradient(650px circle at 0% 0%,
+      hsl(220, 6%, 82%) 15%,
+      hsl(215, 11%, 79%) 35%,
+      hsl(210, 2%, 82%) 75%,
+      hsl(0, 0%, 79%) 80%,
+      transparent 100%),
+    radial-gradient(1250px circle at 100% 100%,
+      hsl(218, 12%, 82%) 15%,
+      hsl(0, 0%, 90%) 35%,
+      hsl(214, 8%, 82%) 75%,
+      hsl(0, 0%, 75%) 80%,
+      transparent 100%);
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
   

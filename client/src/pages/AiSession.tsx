@@ -2,8 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { User } from '../types'
 import httpClient from '../httpClient'
 import './loginStyle.css';
-
-
+import { BarLoader } from 'react-spinners';
 
 import {
     MDBNavbar,
@@ -23,10 +22,12 @@ import {
     
   } from 'mdb-react-ui-kit';
 
+
+
 const AiSession: React.FC = () => {
 
+    const [loading, setLoading] = useState(false);
     const[user, setUser] = useState<User | null>(null)
-
     const [numSongs, setNumSongs] = useState("");
     const [musicVibe, setMusicVibe] = useState("");
     const [musicGenre, setMusicGenre] = useState("");
@@ -50,8 +51,9 @@ const AiSession: React.FC = () => {
         alert("Number of Songs Must be between 1 and 15");
         return;
       }
-
+      setLoading(true);
         try{
+          
             console.log(musicType);
         const resp = await httpClient.post("//localhost:4500/sendUserPreferences",{
             numSongs,
@@ -65,6 +67,7 @@ const AiSession: React.FC = () => {
         });
         console.log(resp);
         window.location.href = "/playlist-view";
+        setLoading(false);
     }
         catch(error: any){
             if (error.response.status === 404){ //If sending user preferences doesn't work
@@ -77,6 +80,7 @@ const AiSession: React.FC = () => {
         const resp = await httpClient.post("//localhost:4500/logout");
         window.location.href="/"
     }
+
 
 
     useEffect(() => {
@@ -164,7 +168,13 @@ const AiSession: React.FC = () => {
                   </div>
              
     <MDBBtn onClick={() => sendMusicPreferences()}color="success" className='w-100 mb-4 ' size='lg'>Generate my playlist</MDBBtn>
+    
+    <div className="loader-container">
+      {loading && <BarLoader color="grey" width={800}/>}
+    </div>
 
+
+  
   </MDBCardBody>
 </MDBCard>
 
