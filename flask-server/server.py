@@ -112,7 +112,7 @@ def getPlaylistInfo():
     song_dictionary['imageUrl'] = image_url
     json_object = json.dumps(song_dictionary)
     update_user = User.query.filter_by(id=user_id).first()
-    update_user.playlistInfo = 'Test Playlist'
+    update_user.playlistInfo = json_object
     db.session.commit()
     return 'Complete'
 
@@ -239,7 +239,7 @@ def get_current_user():
     "spotify_token" : user.spotifyToken,
     "email": user.email,
     "spotify_refresh": user.spotifyRefresh,
-    "playlist": user.playlistInfo
+    "playlistInfo": user.playlistInfo
 })
 
 @app.route("/login", methods=["POST"])
