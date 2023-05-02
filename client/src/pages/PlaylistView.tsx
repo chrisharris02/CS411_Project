@@ -25,6 +25,11 @@ const PlaylistView: React.FC = () =>{
         const resp = await httpClient.post("//localhost:4500/logout");
         window.location.href="/"
     }
+
+    const createSpotifyPlaylist = async() =>{
+        const resp = await httpClient.post("//localhost:4500/createSpotifyPlaylist");
+        
+    }
     useEffect(() => {
         (async () => {
             try{
@@ -68,11 +73,12 @@ const PlaylistView: React.FC = () =>{
         </MDBNavbar>
         </header>
         
-        <h1>Test</h1>
+        
+        <h1>This is a sample Playlist View Page</h1>
         <h2>Email: {user.email}</h2>
         <h2>ID: {user.id}</h2>
         <h2>playlistInfo: {user.playlistInfo}</h2>
-
+        <MDBBtn onClick={createSpotifyPlaylist} color="success">CREATE A SPOTIFY PLAYLIST</MDBBtn>
         </div>
         ) : (
             <div>
