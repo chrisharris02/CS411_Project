@@ -2,6 +2,7 @@ from flask import Flask, request, abort, jsonify, session, url_for, redirect
 from flask_bcrypt import Bcrypt
 import os
 import openai
+from image_functions import compress_image
 from dotenv import load_dotenv
 from models import db, User
 from config import ApplicationConfig
@@ -57,11 +58,12 @@ def create_playlist(token, name):
     create_playlist = spotify_object.user_playlist_create(user_id,playlist_name,False,False,'An Ai Generated Playlist')
     return create_playlist['id'] #returns ID of created playlist
 
-def update_playlist_cover(token, playlist_id, base64_image):
+def update_playlist_cover(token, playlist_id, image_url):
     sp_oauth = create_spotify_oauth()
     code = token
     token_info = sp_oauth.get_access_token(code)
     spotify_object = spotipy.Spotify(auth=token_info['access_token'])
+    base64_image = compress_image(image_url, 60)
     update_picture = spotify_object.playlist_upload_cover_image(playlist_id, base64_image)
     return update_picture
 
@@ -83,7 +85,7 @@ def get_dalle_image(prompt):
         "model": "image-alpha-001",
         "prompt": prompt,
         "num_images": 1,
-        "size": "256x256",
+        "size": "512x512",
         "response_format": "url"
     }
     response = openai.Image.create(**data)
@@ -94,6 +96,30 @@ def get_dalle_image(prompt):
     # # Convert the image data to a base64-encoded string
     # image_base64 = base64.b64encode(image_data).decode("utf-8")
     return image_url
+
+@app.route('/createSpotifyPlaylist', methods=["POST"])
+def createPlaylistController():
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    json_string = user.playlistInfo
+    json_object = json.loads(json_string)
+    user_spotify_token = user.spotifyToken
+    song_list = []
+    art_url = json_object['imageUrl']
+    for item in json_object:
+        if item != 'imageUrl':
+            try:
+                song_list.append(get_track_id(user_spotify_token,item,json_object[item]))
+            except:
+                print('Exception with getting track id')
+    playlist_id = create_playlist(user_spotify_token, 'Ai Generated Playlist')
+    add_tracks_to_playlist(user_spotify_token,playlist_id,song_list)
+    update_playlist_cover(user_spotify_token,playlist_id,art_url)
+
+    return 'Complete'
+
+
+
 
 @app.route('/sendUserPreferences', methods=["POST"])
 def getPlaylistInfo():
@@ -107,7 +133,7 @@ def getPlaylistInfo():
 
     
     song_dictionary = get_songs_gpt(numSongs, musicVibe, musicGenre, artistName, musicDecade, musicType)
-    image_url = get_dalle_image(f"Album cover of music with {musicVibe} vibes and {musicGenre} genre from the {musicDecade}")
+    image_url = get_dalle_image(f"Modern, futuristic Album cover of music with {musicVibe} vibes and {musicGenre} genre from the {musicDecade} without any text")
 
     song_dictionary['imageUrl'] = image_url
     json_object = json.dumps(song_dictionary)
@@ -180,13 +206,13 @@ def redirectPage():
 @app.route('/spotifyTest', methods=["POST"])
 def test_spotify():
     code = request.json['code']
-    track_name = request.json['track']
-    artist_name = request.json['artist']
-    playlist_name = request.json['playlist']
-    #new_playlist = create_playlist(code,'Test')
-    dalle_image = get_dalle_image("prompt")
-    update_cover = update_playlist_cover(code,'32cGgv7CavPPa07Zj0cCzJ',dalle_image)
-    return update_cover #returns ID of created playlist
+    # track_name = request.json['track']
+    art_url = request.json['art']
+    playlist_id = request.json['playlistId']
+    # new_playlist = create_playlist(code,'Test 2')
+    # dalle_image = get_dalle_image("prompt")
+    # update_cover = update_playlist_cover(code,'32cGgv7CavPPa07Zj0cCzJ',dalle_image)
+    return update_playlist_cover(code, playlist_id, art_url) #returns ID of created playlist
 
 @app.route('/spotifyLogin')
 def login():
